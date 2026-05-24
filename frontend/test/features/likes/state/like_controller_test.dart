@@ -12,9 +12,6 @@ import 'like_controller_test.mocks.dart';
   MockSpec<ApiClient>(),
   MockSpec<LikeRepository>(),
 ])
-
-// Mocks generated in like_controller_test.mocks.dart
-
 void main() {
   group('LikeController', () {
     test('toggles likes and refreshes cached values', () async {

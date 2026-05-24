@@ -21,8 +21,6 @@ ForumPost _post(int id) => ForumPost(
       replies: const [],
     );
 
-// MockForumRepository generated in forum_list_controller_test.mocks.dart
-
 void main() {
   group('ForumListController', () {
     test('loads pages and prepends created posts', () async {

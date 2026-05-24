@@ -30,8 +30,6 @@ School _school(int id) => School(
       distanceKm: null,
     );
 
-// MockSchoolRepository generated in schools_list_controller_test.mocks.dart
-
 void main() {
   group('SchoolsListController', () {
     test('refreshes and loads more items', () async {

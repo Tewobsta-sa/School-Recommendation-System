@@ -39,8 +39,6 @@ Comparison _comparison(int id) => Comparison(
       schools: [_school(id)],
     );
 
-// MockComparisonRepository generated in comparisons_controller_test.mocks.dart
-
 void main() {
   group('ComparisonsController', () {
     test('refreshes and prepends created comparisons', () async {

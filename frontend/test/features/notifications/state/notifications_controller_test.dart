@@ -13,9 +13,6 @@ import 'notifications_controller_test.mocks.dart';
   MockSpec<NotificationRepository>(),
   MockSpec<AuthController>(),
 ])
-
-// Mocks generated in notifications_controller_test.mocks.dart
-
 AppNotification _notification(int id, {bool isRead = false}) => AppNotification(
       id: id,
       message: 'Message $id',

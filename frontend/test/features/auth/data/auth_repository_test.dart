@@ -27,19 +27,6 @@ void main() {
 
   group('AuthRepository', () {
     group('login', () {
-      // Future<LoginResult> login(String identifier, String password) async {
-      //   final res = await _dio.post('/api/auth/login', data: {
-      //     'identifier': identifier,
-      //     'password': password,
-      //   });
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      //   final body = res.data as Map<String, dynamic>;
-      //   return LoginResult(
-      //     token: body['token'] as String,
-      //     user: AppUser.fromJson(body['user'] as Map<String, dynamic>),
-      //   );
-      // }
-
       test('returns LoginResult when server responds 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -79,12 +66,6 @@ void main() {
     });
 
     group('getMe', () {
-      // Future<AppUser> getMe() async {
-      //   final res = await _dio.get('/api/users/me');
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      //   return AppUser.fromJson((res.data as Map<String, dynamic>)['user'] as Map<String, dynamic>);
-      // }
-
       test('returns AppUser when server responds 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -111,18 +92,6 @@ void main() {
     });
 
     group('register', () {
-      // Future<void> register({
-      //   required String fullName,
-      //   String? email,
-      //   String? phone,
-      //   required String password,
-      //   required UserRole role,
-      // }) async {
-      //   assert((email != null && email.isNotEmpty) || (phone != null && phone.isNotEmpty));
-      //   final res = await _dio.post('/api/auth/register', data: { ... });
-      //   if (res.statusCode != 201) throw _toApiException(res);
-      // }
-
       test('completes when server responds 201', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(201);
@@ -158,11 +127,6 @@ void main() {
     });
 
     group('verifyEmail', () {
-      // Future<void> verifyEmail(String token) async {
-      //   final res = await _dio.post('/api/auth/verify-email', data: {'token': token});
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      // }
-
       test('completes on 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -188,11 +152,6 @@ void main() {
     });
 
     group('resendVerification', () {
-      // Future<void> resendVerification(String email) async {
-      //   final res = await _dio.post('/api/auth/resend-verification', data: {'email': email});
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      // }
-
       test('completes on 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -207,11 +166,6 @@ void main() {
     });
 
     group('forgotPassword', () {
-      // Future<void> forgotPassword(String email) async {
-      //   final res = await _dio.post('/api/auth/forgot-password', data: {'email': email});
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      // }
-
       test('completes on 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -225,11 +179,6 @@ void main() {
     });
 
     group('resetPassword', () {
-      // Future<void> resetPassword({ required String token, required String newPassword }) async {
-      //   final res = await _dio.post('/api/auth/reset-password', data: {'token': token, 'newPassword': newPassword});
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      // }
-
       test('completes on 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -243,11 +192,6 @@ void main() {
     });
 
     group('changePassword', () {
-      // Future<void> changePassword({ required String currentPassword, required String newPassword }) async {
-      //   final res = await _dio.post('/api/auth/change-password', data: {'currentPassword': currentPassword, 'newPassword': newPassword});
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      // }
-
       test('completes on 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -261,12 +205,6 @@ void main() {
     });
 
     group('updateMe', () {
-      // Future<AppUser> updateMe({String? fullName, String? phone}) async {
-      //   final res = await _dio.put('/api/users/me', data: { ... });
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      //   return AppUser.fromJson((res.data as Map<String, dynamic>)['user'] as Map<String, dynamic>);
-      // }
-
       test('returns updated AppUser on 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -282,8 +220,6 @@ void main() {
     });
 
     group('reactivate', () {
-      // Future<LoginResult> reactivate(String identifier, String password) async { ... }
-
       test('returns LoginResult on 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);
@@ -300,11 +236,6 @@ void main() {
     });
 
     group('deactivateMe', () {
-      // Future<void> deactivateMe() async {
-      //   final res = await _dio.post('/api/users/me/deactivate');
-      //   if (res.statusCode != 200) throw _toApiException(res);
-      // }
-
       test('completes on 200', () async {
         final mockRes = MockResponse();
         when(mockRes.statusCode).thenReturn(200);

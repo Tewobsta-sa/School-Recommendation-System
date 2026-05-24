@@ -13,9 +13,6 @@ import 'announcements_feed_controller_test.mocks.dart';
   MockSpec<AnnouncementRepository>(),
   MockSpec<AuthController>(),
 ])
-
-// Mocks generated in announcements_feed_controller_test.mocks.dart
-
 Announcement _announcement(int id) => Announcement(
       id: id,
       publisherId: 1,
