@@ -1,0 +1,13 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "schoolId": 2,
+      "submittedById": 3,
+      "status": "PENDING",
+      "documents": ["/files/a.pdf"],
+      "submittedAt": "2026-05-01T10:00:00.000Z"
+    }
+  ],
+  "meta": {"page": 1, "totalPages": 1, "total": 1}
+}
