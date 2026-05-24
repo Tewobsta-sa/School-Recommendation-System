@@ -1,0 +1,19 @@
+{
+  "announcement": {
+    "id": 101,
+    "publisherId": 1,
+    "publisherType": "MOE",
+    "schoolId": null,
+    "title": "Admissions Open",
+    "content": "Applications are now open.",
+    "category": "ADMISSIONS",
+    "urgencyLevel": "HIGH",
+    "datePosted": "2026-05-01T12:30:00.000Z",
+    "imgUrl": "/uploads/announcement-images/a.png",
+    "school": {
+      "id": 12,
+      "schoolName": "Sunrise Academy",
+      "verificationStatus": "VERIFIED"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "token": "secrettoken",
+  "user": {
+    "id": 42,
+    "fullName": "Login User",
+    "email": "me@example.com",
+    "phone": null,
+    "role": "PARENT"
+  }
+}

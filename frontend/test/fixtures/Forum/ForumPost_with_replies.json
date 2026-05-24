@@ -1,0 +1,21 @@
+{
+  "id": 10,
+  "authorId": 2,
+  "content": "Parent post",
+  "timestamp": "2026-05-01T11:00:00.000Z",
+  "replies": [
+    {
+      "id": 11,
+      "authorId": 3,
+      "content": "Child reply",
+      "timestamp": "2026-05-01T11:30:00.000Z",
+      "threadId": 10
+      
+    }
+  ],
+  "author": {
+    "id": 2,
+    "fullName": "Alice",
+    "role": "PARENT"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "202",
+  "publisherId": "5",
+  "publisherType": "UNKNOWN",
+  "schoolId": "77",
+  "title": null,
+  "content": null,
+  "category": "UNKNOWN",
+  "urgencyLevel": "UNKNOWN",
+  "datePosted": "2026-05-02T10:00:00.000Z",
+  "imgUrl": null,
+  "school": {
+    "id": "0",
+    "schoolName": "",
+    "verificationStatus": null
+  }
+}

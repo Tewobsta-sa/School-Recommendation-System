@@ -1,0 +1,13 @@
+{
+  "id": 2,
+  "schoolName": "Delta School",
+  "rating": 4.3,
+  "reviewCount": 15,
+  "verificationStatus": null,
+  "facilities": null,
+  "moeScore": 88.0,
+  "schoolLevel": null,
+  "schoolType": null,
+  "passingRate": 0.9,
+  "nationalExamScore": 82
+}

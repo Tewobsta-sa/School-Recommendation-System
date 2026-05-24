@@ -1,0 +1,17 @@
+{
+  "id": "abc",
+  "publisherId": "def",
+  "publisherType": "MOE",
+  "schoolId": "ghi",
+  "title": "Broken Payload",
+  "content": "Still a string",
+  "category": "ADMISSIONS",
+  "urgencyLevel": "HIGH",
+  "datePosted": "2026-05-03T08:00:00.000Z",
+  "imgUrl": null,
+  "school": {
+    "id": "xyz",
+    "schoolName": "Broken School",
+    "verificationStatus": "PENDING"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": 5,
+  "parentId": 2,
+  "metrics": ["tuition", "rating"],
+  "createdAt": "2026-05-01T10:00:00.000Z",
+  "schools": [
+    {
+      "id": 101,
+      "schoolName": "Test School",
+      "address": "1 Test St",
+      "contactEmail": "t@example.com",
+      "curriculum": "LOCAL",
+      "tuitionFee": 5000
+    }
+  ]
+}

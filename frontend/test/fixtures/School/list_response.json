@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "schoolName": "A",
+      "verificationStatus": "PENDING",
+      "curriculum": "LOCAL",
+      "contactEmail": "a@b.com"
+    }
+  ],
+  "meta": {"total": 1, "page": 1, "limit": 10, "totalPages": 1}
+}

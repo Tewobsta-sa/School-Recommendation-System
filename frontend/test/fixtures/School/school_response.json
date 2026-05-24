@@ -1,0 +1,9 @@
+{
+  "school": {
+    "id": 5,
+    "schoolName": "Z",
+    "verificationStatus": "VERIFIED",
+    "curriculum": "LOCAL",
+    "contactEmail": "z@z.com"
+  }
+}

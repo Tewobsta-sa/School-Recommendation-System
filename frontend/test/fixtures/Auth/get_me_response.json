@@ -1,0 +1,9 @@
+{
+  "user": {
+    "id": 99,
+    "fullName": "Current User",
+    "email": "current@example.com",
+    "phone": "0900",
+    "role": "SCHOOL_ADMIN"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "content": "Parent comment",
+  "timestamp": "2026-05-01T12:30:00.000Z",
+  "author": { "fullName": "Alice" },
+  "replies": [
+    {
+      "id": 2,
+      "content": "Child comment",
+      "timestamp": "2026-05-01T13:00:00.000Z",
+      "author": { "fullName": "Bob" },
+      "replies": []
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "request": {
+    "id": 10,
+    "schoolId": 5,
+    "submittedById": 7,
+    "status": "PENDING",
+    "documents": ["/files/a.pdf"],
+    "submittedAt": "2026-05-01T10:00:00.000Z"
+  }
+}

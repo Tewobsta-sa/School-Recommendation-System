@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "id": 10,
+      "authorId": 2,
+      "content": "Parent post",
+      "timestamp": "2026-05-01T11:00:00.000Z",
+      "replyCount": 1,
+      "author": {
+        "id": 2,
+        "fullName": "Alice",
+        "role": "PARENT"
+      }
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "totalPages": 1,
+    "total": 1
+  }
+}

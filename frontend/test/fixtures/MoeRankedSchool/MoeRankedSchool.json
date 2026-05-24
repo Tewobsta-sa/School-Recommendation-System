@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "schoolName": "Gamma School",
+  "rating": 4.7,
+  "reviewCount": 20,
+  "verificationStatus": "VERIFIED",
+  "facilities": "Library",
+  "moeScore": 92.5,
+  "schoolLevel": "Secondary",
+  "schoolType": "Public",
+  "passingRate": 0.85,
+  "nationalExamScore": 78
+}

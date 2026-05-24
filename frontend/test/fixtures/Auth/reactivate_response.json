@@ -1,0 +1,10 @@
+{
+  "token": "reactivatetoken",
+  "user": {
+    "id": 7,
+    "fullName": "Reactivated",
+    "email": "r@example.com",
+    "phone": null,
+    "role": "PARENT"
+  }
+}

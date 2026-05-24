@@ -1,0 +1,23 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "content": "First comment",
+      "timestamp": "2026-05-03T10:00:00.000Z",
+      "author": {
+        "fullName": "Amina"
+      },
+      "replies": [
+        {
+          "id": 2,
+          "content": "Reply",
+          "timestamp": "2026-05-03T11:00:00.000Z",
+          "author": {
+            "fullName": "Biru"
+          },
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
