@@ -30,20 +30,20 @@ async function start() {
       logger.error({ err }, "Failed to enforce deactivation limit");
     }
   });
+
+  // Expire advertisements past endDate — hourly for timely takedown
+  cron.schedule("0 * * * *", async () => {
+    if (process.env.NODE_ENV === "test") return;
+    try {
+      const { expiredCount } = await expireDueAdvertisements();
+      if (expiredCount > 0) {
+        logger.info({ expiredCount }, "Expired advertisements updated");
+      }
+    } catch (err) {
+      logger.error({ err }, "Failed to expire advertisements");
+    }
+  });
 }
 
 start();
 
-
-// Expire advertisements past endDate — hourly for timely takedown
-cron.schedule("0 * * * *", async () => {
-  if (process.env.NODE_ENV === "test") return;
-  try {
-    const { expiredCount } = await expireDueAdvertisements();
-    if (expiredCount > 0) {
-      logger.info({ expiredCount }, "Expired advertisements updated");
-    }
-  } catch (err) {
-    logger.error({ err }, "Failed to expire advertisements");
-  }
-});
