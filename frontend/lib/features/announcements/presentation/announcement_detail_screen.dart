@@ -312,7 +312,20 @@ class _BodyState extends ConsumerState<_Body> {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        Text(a.title, style: theme.textTheme.headlineSmall),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(a.title, style: theme.textTheme.headlineSmall),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              _formatAnnouncementDate(a.datePosted),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 16),
                         SelectableText(
                           a.content,
@@ -589,6 +602,25 @@ String _absoluteImage(String url) {
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('/')) return '${AppConfig.apiBaseUrl}$url';
   return '${AppConfig.apiBaseUrl}/$url';
+}
+
+String _formatAnnouncementDate(dynamic dateInput) {
+  DateTime d;
+  if (dateInput is DateTime) {
+    d = dateInput;
+  } else if (dateInput is String) {
+    d = DateTime.tryParse(dateInput) ?? DateTime.now();
+  } else {
+    return 'Unknown date';
+  }
+  
+  final now = DateTime.now();
+  final diff = now.difference(d);
+  if (diff.inMinutes < 1) return 'just now';
+  if (diff.inHours < 1) return '${diff.inMinutes}m ago';
+  if (diff.inDays < 1) return '${diff.inHours}h ago';
+  if (diff.inDays < 30) return '${diff.inDays}d ago';
+  return '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 }
 
 class _EditAnnouncementDialog extends ConsumerStatefulWidget {

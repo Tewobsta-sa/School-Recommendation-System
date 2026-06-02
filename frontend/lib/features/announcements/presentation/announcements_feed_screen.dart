@@ -359,7 +359,7 @@ class AnnouncementCard extends ConsumerWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          _formatDate(a.datePosted),
+                          _formatAnnouncementDateFeed(a.datePosted),
                           style: theme.textTheme.bodySmall,
                         ),
                       ],
@@ -414,7 +414,35 @@ String _absoluteImage(String url) {
   return '${AppConfig.apiBaseUrl}/$url';
 }
 
-String _formatDate(DateTime d) {
+String _formatAnnouncementDateFeed(dynamic dateInput) {
+  DateTime d;
+  if (dateInput is DateTime) {
+    d = dateInput;
+  } else if (dateInput is String) {
+    d = DateTime.tryParse(dateInput) ?? DateTime.now();
+  } else {
+    return 'Unknown date';
+  }
+  
+  final now = DateTime.now();
+  final diff = now.difference(d);
+  if (diff.inMinutes < 1) return 'just now';
+  if (diff.inHours < 1) return '${diff.inMinutes}m ago';
+  if (diff.inDays < 1) return '${diff.inHours}h ago';
+  if (diff.inDays < 30) return '${diff.inDays}d ago';
+  return '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+}
+
+String _formatDate(dynamic dateInput) {
+  DateTime d;
+  if (dateInput is DateTime) {
+    d = dateInput;
+  } else if (dateInput is String) {
+    d = DateTime.tryParse(dateInput) ?? DateTime.now();
+  } else {
+    return 'Unknown date';
+  }
+  
   final now = DateTime.now();
   final diff = now.difference(d);
   if (diff.inMinutes < 1) return 'just now';

@@ -34,7 +34,6 @@ export async function createReview(userId, schoolId, data) {
     parent = await db.parent.create({
       data: {
         userId,
-        address: "Default Address",
         latitude: 0,
         longitude: 0,
       },

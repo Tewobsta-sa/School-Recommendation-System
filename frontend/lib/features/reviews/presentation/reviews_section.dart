@@ -99,6 +99,7 @@ class _ReviewsSectionState extends ConsumerState<ReviewsSection> {
               ),
             if (_showForm && _editingReview == null)
               _ReviewForm(
+                key: const ValueKey('new-review-form'), // Add stable key
                 rating: _rating,
                 tag: _tag,
                 commentCtrl: _commentCtrl,
@@ -139,6 +140,7 @@ class _ReviewsSectionState extends ConsumerState<ReviewsSection> {
                   for (final r in previewReviews)
                     if (_editingReview?.id == r.id && _showForm)
                       _ReviewForm(
+                        key: ValueKey('form-${r.id}'), // Add stable key
                         rating: _rating,
                         tag: _tag,
                         commentCtrl: _commentCtrl,
@@ -156,6 +158,7 @@ class _ReviewsSectionState extends ConsumerState<ReviewsSection> {
                       )
                     else
                       _ReviewTile(
+                        key: ValueKey('review-${r.id}'), // Add stable key
                         review: r,
                         mine: r.parentId == auth.user?.id && isParent,
                         onEdit: () => _toggleForm(r),
@@ -210,6 +213,9 @@ class _ReviewsSectionState extends ConsumerState<ReviewsSection> {
       categoryTag: _tag,
     );
     
+    // Store current edit state to preserve on error
+    final currentEditingReview = _editingReview;
+    
     final ok = _editingReview == null
         ? await controller.create(input)
         : await controller.update(_editingReview!.id, input);
@@ -219,6 +225,12 @@ class _ReviewsSectionState extends ConsumerState<ReviewsSection> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(controller.error ?? 'Failed to save review')),
       );
+      // Ensure form stays open on error so user can retry
+      setState(() {
+        _showForm = true;
+        // Preserve editing state on error
+        _editingReview = currentEditingReview;
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Review saved')),
@@ -235,18 +247,42 @@ class _ReviewsSectionState extends ConsumerState<ReviewsSection> {
   }
 
   Future<void> _confirmDelete(Review r) async {
+    final theme = Theme.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete review?'),
-        content: const Text('This action cannot be undone.'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.delete_outline,
+              color: theme.colorScheme.error,
+            ),
+            const SizedBox(width: 12),
+            const Text('Delete review?'),
+          ],
+        ),
+        content: const Text(
+          'This action cannot be undone. Your review will be permanently removed.',
+        ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.of(ctx).pop(false),
-              child: const Text('Cancel')),
-          FilledButton.tonal(
-              onPressed: () => Navigator.of(ctx).pop(true),
-              child: const Text('Delete')),
+            onPressed: () => Navigator.of(ctx).pop(false),
+            style: TextButton.styleFrom(
+              foregroundColor: theme.colorScheme.onSurface,
+            ),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: FilledButton.styleFrom(
+              backgroundColor: theme.colorScheme.error,
+              foregroundColor: theme.colorScheme.onError,
+            ),
+            child: const Text('Delete'),
+          ),
         ],
       ),
     );
@@ -262,17 +298,20 @@ class _ReviewTile extends StatelessWidget {
   final bool mine;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final Key? key;
   const _ReviewTile({
     required this.review,
     required this.mine,
     required this.onEdit,
     required this.onDelete,
+    this.key,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
+      key: key,
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -348,6 +387,7 @@ class _ReviewForm extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final bool saving;
+  final Key? key;
 
   const _ReviewForm({
     required this.rating,
@@ -358,12 +398,14 @@ class _ReviewForm extends StatelessWidget {
     required this.onSave,
     required this.onCancel,
     required this.saving,
+    this.key,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Card(
+      key: key,
       color: theme.colorScheme.surfaceContainerHighest,
       child: Padding(
         padding: const EdgeInsets.all(16),
