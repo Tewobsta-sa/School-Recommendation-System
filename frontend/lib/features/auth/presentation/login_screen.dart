@@ -24,6 +24,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _loading = false;
   String? _error;
   bool _isSelfDeactivated = false;
+  bool _isAccountBanned = false;
   bool _identifierKind = false; // false = email, true = phone
 
   @override
@@ -91,6 +92,8 @@ String? _validatePhone(String? raw) {
           _error = ErrorHandler.getUserFriendlyMessage(e);
           _isSelfDeactivated =
               (e is ApiException && e.code == 'ACCOUNT_SELF_DEACTIVATED');
+          _isAccountBanned =
+              (e is ApiException && e.code == 'ACCOUNT_BANNED');
         });
       }
     } finally {
@@ -196,7 +199,7 @@ String? _validatePhone(String? raw) {
                         const SizedBox(height: 6),
                         Text(_error!,
                             style: TextStyle(color: Theme.of(context).colorScheme.error)),
-                        if (_isSelfDeactivated) ...[
+                        if (_isSelfDeactivated && !_isAccountBanned) ...[
                           const SizedBox(height: 6),
                           ElevatedButton(
                             onPressed: () => _showReactivateDialog(context),

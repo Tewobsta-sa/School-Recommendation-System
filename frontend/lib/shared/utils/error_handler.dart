@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import '../../features/auth/data/auth_repository.dart' show ApiException;
 import '../../core/location_helper.dart' show LocationException;
 
@@ -6,6 +8,10 @@ class ErrorHandler {
   static String getUserFriendlyMessage(dynamic error) {
     if (error is ApiException) {
       return _getApiErrorMessage(error);
+    }
+    
+    if (error is DioException) {
+      return _getDioErrorMessage(error);
     }
     
     if (error is LocationException) {
@@ -66,6 +72,9 @@ class ErrorHandler {
         return 'Please verify your email address to continue.';
       case 'ACCOUNT_SELF_DEACTIVATED':
         return 'Your account has been deactivated. You can reactivate it anytime.';
+      case 'ACCOUNT_BANNED':
+        // Use the actual error message from API which includes the ban reason
+        return error.message.isNotEmpty ? error.message : 'Your account has been banned due to violations of terms and services.';
       case 'ACCOUNT_SUSPENDED':
         return 'Your account has been suspended. Please contact support for assistance.';
       case 'INVALID_TOKEN':
@@ -103,6 +112,47 @@ class ErrorHandler {
     }
   }
   
+  static String _getDioErrorMessage(DioException error) {
+    switch (error.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        return 'Request timed out. Please check your connection and try again.';
+      case DioExceptionType.connectionError:
+        return 'Please check your internet connection and try again.';
+      case DioExceptionType.badResponse:
+        // Try to extract error message from response
+        if (error.response?.data is Map) {
+          final data = error.response!.data as Map;
+          final msg = (data['error'] ?? data['message'])?.toString();
+          if (msg != null && msg.isNotEmpty) {
+            return msg;
+          }
+        }
+        // Fall back to status code based messages
+        final statusCode = error.response?.statusCode;
+        if (statusCode == 401) {
+          return 'Please sign in to continue.';
+        } else if (statusCode == 403) {
+          return 'You don\'t have permission to perform this action.';
+        } else if (statusCode == 404) {
+          return 'The requested resource was not found.';
+        } else if (statusCode != null && statusCode >= 500) {
+          return 'Something went wrong on our end. Please try again later.';
+        }
+        return 'Request failed. Please try again.';
+      case DioExceptionType.cancel:
+        return 'Request was cancelled.';
+      case DioExceptionType.unknown:
+        if (error.error != null && error.error.toString().contains('SocketException')) {
+          return 'Please check your internet connection and try again.';
+        }
+        return 'An unexpected error occurred. Please try again.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
+    }
+  }
+  
   /// Get a more detailed error message with suggestions
   static String getDetailedErrorMessage(dynamic error) {
     final baseMessage = getUserFriendlyMessage(error);
@@ -119,6 +169,8 @@ class ErrorHandler {
           return '$baseMessage\n\nTip: Check your inbox or SMS for the verification code.';
         case 'ACCOUNT_SELF_DEACTIVATED':
           return '$baseMessage\n\nTip: Use the reactivation option below to restore your account.';
+        case 'ACCOUNT_BANNED':
+          return baseMessage; // The base message now includes the specific ban reason from the API
         default:
           return baseMessage;
       }
@@ -127,6 +179,22 @@ class ErrorHandler {
     if (error is LocationException) {
       // Location errors already have helpful guidance in the message
       return baseMessage;
+    }
+    
+    if (error is DioException) {
+      // Add specific suggestions based on DioException type
+      switch (error.type) {
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
+          return '$baseMessage\n\nTip: Check your internet connection speed and try again.';
+        case DioExceptionType.connectionError:
+          return '$baseMessage\n\nTip: Make sure you\'re connected to the internet.';
+        case DioExceptionType.badResponse:
+          return baseMessage; // Base message already includes specific error details
+        default:
+          return baseMessage;
+      }
     }
     
     return baseMessage;
