@@ -8,8 +8,8 @@ Web platform that helps Ethiopian parents discover, compare and get personalized
 - **Frontend**: Flutter (Web, Android, iOS) with custom design system
 - **Database**: MariaDB 10.6+ / MySQL 8+
 - **Authentication**: JWT with email verification
-- **Maps**: Leaflet + OpenStreetMap (no API key required)
-
+- **Maps**: OpenStreetMap (no API key required)
+- **Recommendation Engine** - [Recommendation Engine Github Link](https://github.com/Tewobsta-sa/Recommendation_Engine)
 ## Features
 
 ### Core Functionality
