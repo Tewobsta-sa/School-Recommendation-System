@@ -396,7 +396,42 @@ export async function loginUser({ identifier, email, password }) {
       err.code = "ACCOUNT_SELF_DEACTIVATED";
       throw err;
     }
-    throw new UnauthorizedError("Account is deactivated");
+    // Account is deactivated by moderator (banned) - fetch ban reason
+    let banReason = "Account is banned due to violations of terms and services";
+    
+    try {
+      // Find the most recent BAN_USER action that affected this user
+      // by checking reports on content created by this user
+      const banAction = await db.moderatorAction.findFirst({
+        where: {
+          actionType: "BAN_USER",
+          report: {
+            OR: [
+              { targetType: "REVIEW", targetId: { in: await getUserReviewIds(user.id) } },
+              { targetType: "ANNOUNCEMENT", targetId: { in: await getUserAnnouncementIds(user.id) } },
+              { targetType: "FORUM_POST", targetId: { in: await getUserForumPostIds(user.id) } },
+              { targetType: "SCHOOL", targetId: { in: await getUserSchoolIds(user.id) } },
+            ]
+          }
+        },
+        include: {
+          report: true
+        },
+        orderBy: { actionDate: "desc" }
+      });
+      
+      if (banAction && banAction.notes) {
+        banReason = `Account banned: ${banAction.notes}`;
+      } else if (banAction && banAction.report) {
+        banReason = `Account banned due to: ${banAction.report.reason}`;
+      }
+    } catch (err) {
+      logger.warn({ err, userId: user.id }, "Failed to fetch ban reason");
+    }
+    
+    const error = new UnauthorizedError(banReason);
+    error.code = "ACCOUNT_BANNED";
+    throw error;
   }
 
   const match = await bcrypt.compare(password, user.password);
@@ -532,4 +567,37 @@ export async function reactivateAccount({ identifier, password }) {
   });
 
   return { token: signToken(user), user: sanitizeUser(user) };
+}
+
+// Helper functions to get user content IDs for ban reason lookup
+async function getUserReviewIds(userId) {
+  const reviews = await db.review.findMany({
+    where: { parentId: userId },
+    select: { id: true }
+  });
+  return reviews.map(r => r.id);
+}
+
+async function getUserAnnouncementIds(userId) {
+  const announcements = await db.announcement.findMany({
+    where: { publisherId: userId },
+    select: { id: true }
+  });
+  return announcements.map(a => a.id);
+}
+
+async function getUserForumPostIds(userId) {
+  const posts = await db.discussionForum.findMany({
+    where: { authorId: userId },
+    select: { id: true }
+  });
+  return posts.map(p => p.id);
+}
+
+async function getUserSchoolIds(userId) {
+  const schools = await db.school.findMany({
+    where: { adminId: userId },
+    select: { id: true }
+  });
+  return schools.map(s => s.id);
 }

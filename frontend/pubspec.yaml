@@ -59,6 +59,7 @@ dependencies:
   # Per-platform secret storage: Keychain on iOS, EncryptedSharedPreferences
   # on Android, IndexedDB+localStorage on web. We use it for the JWT.
   flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.2.2
 
   # Form helpers
   email_validator: ^3.0.0

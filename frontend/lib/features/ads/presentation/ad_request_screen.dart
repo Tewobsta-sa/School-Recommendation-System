@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../auth/data/auth_repository.dart';
+import '../../../shared/utils/error_handler.dart';
 import '../data/ad_dtos.dart';
 import '../data/ad_repository.dart';
 
@@ -114,9 +115,9 @@ class _AdRequestScreenState extends ConsumerState<AdRequestScreen> {
         ),
       );
     } on ApiException catch (e) {
-      setState(() => _error = e.message);
+      setState(() => _error = ErrorHandler.getUserFriendlyMessage(e));
     } catch (e) {
-      setState(() => _error = e.toString());
+      setState(() => _error = ErrorHandler.getUserFriendlyMessage(e));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
