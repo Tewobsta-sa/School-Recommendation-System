@@ -1,6 +1,6 @@
 # Fidel Guide
 
-Web platform that helps Ethiopian parents discover, compare and get personalized school recommendations, backed by MoE verification, moderated reviews, and a forum for community Q&A.
+Web and Mobile based platform that helps Ethiopian parents discover, compare and get personalized school recommendations, backed by MoE verification, moderated reviews, and a forum for community Q&A.
 
 ## Tech Stack
 
@@ -8,13 +8,14 @@ Web platform that helps Ethiopian parents discover, compare and get personalized
 - **Frontend**: Flutter (Web, Android, iOS) with custom design system
 - **Database**: MariaDB 10.6+ / MySQL 8+
 - **Authentication**: JWT with email verification
-- **Maps**: OpenStreetMap (no API key required)
+- **Maps**: Leaflet + OpenStreetMap (no API key required)
 - **Recommendation Engine** - [Recommendation Engine Github Link](https://github.com/Tewobsta-sa/Recommendation_Engine)
+
 ## Features
 
 ### Core Functionality
 - **School Discovery**: Search, filter, and browse schools with detailed information
-- **Personalized Recommendations**: AI-powered school recommendations based on parent preferences
+- **Personalized Recommendations:** Simple weight-based scoring system matching school profiles with parent preferences *(Note: Dedicated ML service integration planned for future deployment)*
 - **School Comparison**: Side-by-side comparison of 2-5 schools with detailed metrics
 - **Reviews & Ratings**: Parent reviews with moderation and category-based tags
 - **Follow System**: Subscribe to schools for targeted announcements
@@ -74,8 +75,6 @@ flutter run -d chrome
 # Android
 flutter run
 
-# iOS
-flutter run
 ```
 
 ## Environment Variables
@@ -89,6 +88,8 @@ See [`backend/.env.example`](backend/.env.example) and [`frontend/.env.example`]
 - `DATABASE_PASSWORD` - MariaDB password
 - `DATABASE_NAME` - MariaDB database name
 - `DATABASE_URL` - Full connection string
+- `TEXTBEE_API_KEY` - API key for Textbee SMS gateway integration
+- `TEXTBEE_DEVICE_ID` - Device ID linked to the Textbee gateway
 
 ### Optional Backend Variables
 - `PORT` (default `5050`)
@@ -98,7 +99,6 @@ See [`backend/.env.example`](backend/.env.example) and [`frontend/.env.example`]
 - `APP_URL` - Base URL for email links (default `http://localhost:5050`)
 - `SMTP_URL` - SMTP endpoint for real email delivery
 - `MAIL_FROM` - Sender address (default `no-reply@fidelguide.local`)
-- `ML_SERVICE_URL` - ML service URL for recommendations
 - `UPLOAD_DIR` - File upload directory
 - `UPLOAD_MAX_SIZE_BYTES` - Max file size (default 10MB)
 
@@ -174,13 +174,6 @@ frontend/
 When the backend is running, interactive API documentation is available:
 - **Swagger UI**: `http://localhost:5050/api/docs`
 - **OpenAPI Spec**: `http://localhost:5050/api/docs.json`
-
-## Development Workflow
-
-- Active development happens on `develop` branch
-- `main` branch receives final releases
-- Branch naming: `feat/<area>-<short-desc>` or `fix/<area>-<short-desc>`
-- Keep PRs focused and small for faster CI/CD
 
 ## License
 
