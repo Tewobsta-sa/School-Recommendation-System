@@ -13,6 +13,7 @@ class PasswordField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
   final List<String>? autofillHints;
+  final InputDecoration? decoration;
 
   const PasswordField({
     super.key,
@@ -25,6 +26,7 @@ class PasswordField extends StatefulWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.autofillHints,
+    this.decoration,
   });
 
   @override
@@ -42,6 +44,25 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    final defaultDecoration = InputDecoration(
+      labelText: widget.labelText,
+      hintText: widget.hintText,
+      helperText: widget.helperText,
+      suffixIcon: IconButton(
+        icon: Icon(
+          _obscureText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+          color: AppColors.textSecondary,
+        ),
+        onPressed: _toggleVisibility,
+      ),
+    );
+
+    final mergedDecoration = widget.decoration != null
+        ? defaultDecoration.copyWith(
+            contentPadding: widget.decoration!.contentPadding,
+          )
+        : defaultDecoration;
+
     return TextFormField(
       controller: widget.controller,
       obscureText: _obscureText,
@@ -49,18 +70,7 @@ class _PasswordFieldState extends State<PasswordField> {
       textInputAction: widget.textInputAction,
       onFieldSubmitted: widget.onFieldSubmitted,
       autofillHints: widget.autofillHints,
-      decoration: InputDecoration(
-        labelText: widget.labelText,
-        hintText: widget.hintText,
-        helperText: widget.helperText,
-        suffixIcon: IconButton(
-          icon: Icon(
-            _obscureText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-            color: AppColors.textSecondary,
-          ),
-          onPressed: _toggleVisibility,
-        ),
-      ),
+      decoration: mergedDecoration,
       validator: widget.validator,
     );
   }
