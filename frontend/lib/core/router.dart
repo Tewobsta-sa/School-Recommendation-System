@@ -34,6 +34,9 @@ import '../features/moe/presentation/moe_dashboard_screen.dart';
 import '../features/moe/presentation/moe_home_screen.dart';
 import '../features/moe/presentation/moe_verification_queue_screen.dart';
 import '../features/notifications/presentation/notifications_screen.dart';
+import '../features/onboarding/data/onboarding_service.dart';
+import '../features/onboarding/presentation/onboarding_screen.dart';
+import '../features/onboarding/presentation/splash_screen.dart';
 import '../features/preferences/presentation/preferences_screen.dart';
 import '../features/schools/presentation/school_detail_screen.dart';
 import '../features/schools/presentation/schools_list_screen.dart';
@@ -52,6 +55,8 @@ import '../features/ads/presentation/ad_payment_success_screen.dart';
 /// + reset-password are public because they're entered from email deep links;
 /// hiding them behind auth would be a chicken-and-egg loop.
 const _publicRoutes = <String>{
+  '/splash',
+  '/onboarding',
   '/landing',
   '/login',
   '/register',
@@ -74,7 +79,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   final auth = ref.read(authControllerProvider);
 
   return GoRouter(
-    initialLocation: '/landing',
+    initialLocation: '/splash',
     refreshListenable: auth,
     redirect: (context, state) {
       if (auth.initializing) return null;
@@ -103,6 +108,17 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       // Public routes with smooth fade transitions
+      GoRoute(
+        path: '/splash',
+        builder: (_, __) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: '/onboarding',
+        pageBuilder: (context, state) => AppAnimations.fadeInScale(
+          key: state.pageKey,
+          child: const OnboardingScreen(),
+        ),
+      ),
       GoRoute(
         path: '/landing',
         pageBuilder: (context, state) => AppAnimations.fadeInScale(
