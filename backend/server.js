@@ -1,7 +1,6 @@
 import "dotenv/config";
 import app from "./src/app.js";
-import cron from "node-cron";  
-import { enforceDeactivationLimit } from "./src/services/user.service.js";  
+import cron from "node-cron";    
 import { logger } from "./src/config/logger.js";
 import { enforceDeactivationLimit } from "./src/services/user.service.js";
 import { expireDueAdvertisements } from "./src/services/ad.service.js";
