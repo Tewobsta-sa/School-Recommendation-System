@@ -30,6 +30,7 @@ export const UPLOAD_MAX_SIZE_BYTES = Number(
 const VERIFICATION_SUBDIR = "verification";
 const FACILITY_IMAGES_SUBDIR = "facility-images";
 const ANNOUNCEMENT_IMAGES_SUBDIR = "announcement-images";
+const AD_IMAGES_SUBDIR = "ad-images";
 const ACHIEVEMENTS_SUBDIR = "achievements";
 
 // MIME whitelist for verification document uploads — accreditation papers
@@ -54,6 +55,7 @@ const IMAGE_MIME_WHITELIST = new Set([
 mkdirSync(path.join(UPLOAD_DIR, VERIFICATION_SUBDIR), { recursive: true });
 mkdirSync(path.join(UPLOAD_DIR, FACILITY_IMAGES_SUBDIR), { recursive: true });
 mkdirSync(path.join(UPLOAD_DIR, ANNOUNCEMENT_IMAGES_SUBDIR), { recursive: true });
+mkdirSync(path.join(UPLOAD_DIR, AD_IMAGES_SUBDIR), { recursive: true });
 mkdirSync(path.join(UPLOAD_DIR, ACHIEVEMENTS_SUBDIR), { recursive: true });
 
 function safeFilename(originalName) {
@@ -185,6 +187,11 @@ export const facilityImageUpload = wrapMulter(
 /** Single announcement-image upload under field `image`. */
 export const announcementImageUpload = wrapMulter(
   imageUploader(ANNOUNCEMENT_IMAGES_SUBDIR).single("image")
+);
+
+/** Single advertisement banner upload under field `image`. */
+export const adImageUpload = wrapMulter(
+  imageUploader(AD_IMAGES_SUBDIR).single("image")
 );
 
 /**

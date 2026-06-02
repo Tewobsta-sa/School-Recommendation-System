@@ -599,3 +599,84 @@ enum ForumTargetType {
   FORUM_POST   @map("forum_post")
   ANNOUNCEMENT @map("announcement")
 }
+
+enum AdStatus {
+  PENDING_REVIEW @map("pending_review")
+  AWAITING_PAYMENT @map("awaiting_payment")
+  PENDING_PAYMENT @map("pending_payment")
+  PAYMENT_PENDING_VERIFICATION @map("payment_pending_verification")
+  ACTIVE @map("active")
+  REJECTED @map("rejected")
+  EXPIRED @map("expired")
+}
+
+enum AdPlacementType {  
+  BANNER @map("banner")  
+  POPUP @map("popup")  
+}
+
+enum PaymentStatus {
+  PENDING @map("pending")
+  COMPLETED @map("completed")
+  FAILED @map("failed")
+  REFUNDED @map("refunded")
+}
+
+
+model Advertisement {
+  id            Int              @id @default(autoincrement()) @map("advertisement_id")
+  companyName   String           @map("company_name") @db.VarChar(150)
+  contactEmail  String           @map("contact_email") @db.VarChar(100)
+  contactPhone  String           @map("contact_phone") @db.VarChar(15)
+  title         String           @db.VarChar(150)
+  description   String?          @db.Text
+  imageUrl      String?          @map("image_url") @db.VarChar(255)
+  targetUrl     String           @map("target_url") @db.VarChar(255)
+  placementType AdPlacementType  @default(BANNER) @map("placement_type")
+  durationDays  Int              @map("duration_days")
+
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date")
+
+  status AdStatus @default(PENDING_REVIEW)
+
+  impressions Int @default(0)
+  clicks      Int @default(0)
+
+  paymentId Int?     @unique @map("payment_id")
+  payment   Payment? @relation(fields: [paymentId], references: [id])
+
+  rejectReason String?   @map("reject_reason") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  chappaTransactionId String? @map("chappa_transaction_id") @db.VarChar(100)  
+  chappaPaymentUrl String? @map("chappa_payment_url") @db.VarChar(255)  
+
+
+  @@index([status])
+  @@index([placementType])
+  @@index([startDate, endDate])
+  @@map("advertisement")
+}
+
+model Payment {  
+  id            Int            @id @default(autoincrement()) @map("payment_id")  
+  advertisement Advertisement?  
+  
+  amount   Decimal @db.Decimal(10, 2)  
+  currency String  @default("ETB") @db.VarChar(10)  
+  
+    
+  status        PaymentStatus  @default(PENDING)  
+  transactionId String?        @unique @map("transaction_id") @db.VarChar(100)  
+  chappaCheckoutId String? @unique @map("chappa_checkout_id") @db.VarChar(100)  
+  chappaReference String? @map("chappa_reference") @db.VarChar(100)  
+  
+  createdAt DateTime @default(now()) @map("created_at")  
+  updatedAt DateTime @updatedAt @map("updated_at")  
+  
+  @@index([status])  
+  @@map("payment")  
+}

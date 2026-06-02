@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/ads/presentation/ad_payment_screen.dart';
+import '../features/ads/presentation/ad_request_screen.dart';
+import '../features/ads/presentation/moderation_ad_queue_screen.dart';
 import '../shared/utils/animations.dart';
 import '../features/landing/presentation/landing_screen.dart';
 import '../features/schools/presentation/manage_followed_schools_screen.dart';
@@ -38,11 +41,12 @@ import '../features/auth/presentation/phone_verify_screen.dart';
 import '../features/demographics/presentation/demographics_manage_screen.dart';
 import '../features/analytics/presentation/school_analytics_screen.dart';
 
-import '../features/achievements/presentation/achievements_manage_screen.dart';  
-import '../features/achievements/presentation/achievement_detail_screen.dart';  
-import '../features/achievements/presentation/staff_breakdown_screen.dart';  
+import '../features/achievements/presentation/achievements_manage_screen.dart';
+import '../features/achievements/presentation/achievement_detail_screen.dart';
+import '../features/achievements/presentation/staff_breakdown_screen.dart';
 import '../features/achievements/presentation/moe_achievement_review_screen.dart';
 import '../features/reviews/presentation/school_reviews_screen.dart';
+import '../features/ads/presentation/ad_payment_success_screen.dart';
 
 /// Lists routes that anyone (logged in or not) is allowed to hit. Email-verify
 /// + reset-password are public because they're entered from email deep links;
@@ -55,7 +59,12 @@ const _publicRoutes = <String>{
   '/reset-password',
   '/verify-email',
   '/verify-phone',
+  '/advertise',
 };
+
+bool _isPublicAdvertiseRoute(String location) {
+  return location.startsWith('/advertise');
+}
 
 final routerProvider = Provider<GoRouter>((ref) {
   // We deliberately `read` rather than `watch` here. The router itself only
@@ -71,15 +80,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (auth.initializing) return null;
 
       final goingPublic = _publicRoutes.any(
-        (p) => state.matchedLocation.startsWith(p),
-      );
+            (p) => state.matchedLocation.startsWith(p),
+          ) ||
+          _isPublicAdvertiseRoute(state.matchedLocation);
 
       if (!auth.isAuthenticated && !goingPublic) {
         return '/landing';
       }
       if (auth.isAuthenticated && goingPublic) {
         if (state.matchedLocation.startsWith('/verify-email') ||
-            state.matchedLocation.startsWith('/reset-password')) {
+            state.matchedLocation.startsWith('/reset-password') ||
+            state.matchedLocation.startsWith('/advertise/pay') ||
+            state.matchedLocation.startsWith('/advertise/success')) {
           return null;
         }
         if (state.matchedLocation == '/landing') {
@@ -97,6 +109,35 @@ final routerProvider = Provider<GoRouter>((ref) {
           key: state.pageKey,
           child: const LandingScreen(),
         ),
+      ),
+
+      GoRoute(
+        path: '/advertise/success/:id',
+        builder: (_, state) {
+          final id = int.tryParse(state.pathParameters['id'] ?? '');
+          if (id == null) {
+            return const Scaffold(
+              body: Center(child: Text('Invalid advertisement id')),
+            );
+          }
+          return AdPaymentSuccessScreen(adId: id);
+        },
+      ),
+      GoRoute(
+        path: '/advertise',
+        builder: (_, __) => const AdRequestScreen(),
+      ),
+      GoRoute(
+        path: '/advertise/pay/:id',
+        builder: (_, state) {
+          final id = int.tryParse(state.pathParameters['id'] ?? '');
+          if (id == null) {
+            return const Scaffold(
+              body: Center(child: Text('Invalid advertisement id')),
+            );
+          }
+          return AdPaymentScreen(adId: id);
+        },
       ),
       GoRoute(
         path: '/login',
@@ -412,63 +453,69 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const AdminUserCreateScreen(),
         ),
       ),
-      GoRoute(  
-        path: '/admin/schools/:schoolId/demographics',  
-        pageBuilder: (context, state) {  
-          final schoolId = int.parse(state.pathParameters['schoolId']!);  
+      GoRoute(
+        path: '/admin/schools/:schoolId/demographics',
+        pageBuilder: (context, state) {
+          final schoolId = int.parse(state.pathParameters['schoolId']!);
           return AppAnimations.slideInFromRight(
             key: state.pageKey,
-            child: DemographicsManageScreen(schoolId: schoolId),  
+            child: DemographicsManageScreen(schoolId: schoolId),
           );
-        },  
+        },
       ),
-      GoRoute(  
-        path: '/schools/:schoolId/analytics',  
-        pageBuilder: (_, state) {  
-          final schoolId = int.parse(state.pathParameters['schoolId']!);  
+      GoRoute(
+        path: '/schools/:schoolId/analytics',
+        pageBuilder: (_, state) {
+          final schoolId = int.parse(state.pathParameters['schoolId']!);
           return AppAnimations.slideInFromRight(
             key: state.pageKey,
-            child: SchoolAnalyticsScreen(schoolId: schoolId),  
+            child: SchoolAnalyticsScreen(schoolId: schoolId),
           );
-        },  
+        },
       ),
-      GoRoute(  
-        path: '/admin/schools/:schoolId/achievements',  
-        pageBuilder: (context, state) {  
-          final schoolId = int.parse(state.pathParameters['schoolId']!);  
+      GoRoute(
+        path: '/admin/schools/:schoolId/achievements',
+        pageBuilder: (context, state) {
+          final schoolId = int.parse(state.pathParameters['schoolId']!);
           return AppAnimations.slideInFromRight(
             key: state.pageKey,
-            child: AchievementsManageScreen(schoolId: schoolId),  
+            child: AchievementsManageScreen(schoolId: schoolId),
           );
-        },  
+        },
       ),
-      GoRoute(  
-        path: '/admin/schools/:schoolId/achievements/:achievementId',  
-        pageBuilder: (context, state) {  
-          final schoolId = int.parse(state.pathParameters['schoolId']!);  
-          final achievementId = int.parse(state.pathParameters['achievementId']!);  
+      GoRoute(
+        path: '/admin/schools/:schoolId/achievements/:achievementId',
+        pageBuilder: (context, state) {
+          final schoolId = int.parse(state.pathParameters['schoolId']!);
+          final achievementId =
+              int.parse(state.pathParameters['achievementId']!);
           return AppAnimations.slideInFromRight(
             key: state.pageKey,
-            child: AchievementDetailScreen(schoolId: schoolId, achievementId: achievementId),  
+            child: AchievementDetailScreen(
+                schoolId: schoolId, achievementId: achievementId),
           );
-        },  
+        },
       ),
-      GoRoute(  
-        path: '/admin/schools/:schoolId/staff-breakdown',  
-        pageBuilder: (context, state) {  
-          final schoolId = int.parse(state.pathParameters['schoolId']!);  
+      GoRoute(
+        path: '/admin/schools/:schoolId/staff-breakdown',
+        pageBuilder: (context, state) {
+          final schoolId = int.parse(state.pathParameters['schoolId']!);
           return AppAnimations.slideInFromRight(
             key: state.pageKey,
-            child: StaffBreakdownScreen(schoolId: schoolId),  
+            child: StaffBreakdownScreen(schoolId: schoolId),
           );
-        },  
+        },
       ),
-      GoRoute(  
-        path: '/moe/achievements',  
+      GoRoute(
+        path: '/moe/achievements',
         pageBuilder: (_, __) => AppAnimations.slideInFromRight(
           key: const ValueKey('moe-achievements'),
-          child: const MoeAchievementReviewScreen(),  
+          child: const MoeAchievementReviewScreen(),
         ),
+      ),
+      GoRoute(
+        path: '/moderation/ads',
+        builder: (_, __) => const ModerationAdQueueScreen(),
       ),
     ],
     errorBuilder: (_, state) => Scaffold(

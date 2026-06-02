@@ -40,6 +40,9 @@ export async function registerVerifiedUser({
       emailVerified: true,
       emailVerificationToken: null,
       emailVerificationExpires: null,
+      phoneVerified: true,
+      phoneVerificationToken: null,
+      phoneVerificationExpires: null,
     },
   });
 

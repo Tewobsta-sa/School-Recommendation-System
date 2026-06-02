@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../ads/presentation/ad_banner_section.dart';
+import '../../ads/presentation/ad_popup_section.dart';
+import '../../ads/data/ad_dtos.dart';
 
 import '../../../core/theme.dart';
 import '../../../core/design_system.dart';
@@ -16,42 +19,44 @@ class LandingScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              // =========================================================
-              // HERO SECTION
-              // =========================================================
+      body: Stack(
+        children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  // =========================================================
+                  // HERO SECTION
+                  // =========================================================
 
-              Material(
-                child: _buildHeroSection(context, theme),
-              ),
+                  Material(
+                    child: _buildHeroSection(context, theme),
+                  ),
 
-              // =========================================================
-              // MAIN CONTENT
-              // =========================================================
+                  // =========================================================
+                  // MAIN CONTENT
+                  // =========================================================
 
-              LayoutBuilder(
+                  LayoutBuilder(
                 builder: (context, constraints) {
                   final isMobile = constraints.maxWidth < 600;
                   final horizontalPadding = isMobile ? 16.0 : 20.0;
                   final verticalPadding = isMobile ? 40.0 : 60.0;
                   
                   return Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 1100),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: horizontalPadding,
-                          vertical: verticalPadding,
-                        ),
-                    child: Column(
-                      children: [
-                        _FadeInSection(
-                          child: _buildFeaturesSection(theme),
-                        ),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 1100),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: horizontalPadding,
+                              vertical: verticalPadding,
+                            ),
+                        child: Column(
+                          children: [
+                            _FadeInSection(
+                              child: _buildFeaturesSection(theme),
+                            ),
 
                         const SizedBox(height: 100),
 
@@ -64,62 +69,56 @@ class LandingScreen extends ConsumerWidget {
                         _FadeInSection(
                           child: _buildWhoBenefitsSection(theme),
                         ),
-
-                        const SizedBox(height: 100),
-
-                        _FadeInSection(
-                          child: _buildMissionSection(theme),
-                        ),
-
-                        const SizedBox(height: 80),
-
-                        _FadeInSection(
-                          child: _buildStatsSection(theme),
-                        ),
-
-                        const SizedBox(height: 80),
-
-                        _FadeInSection(
-                          child: _buildHowItWorksSection(theme),
-                        ),
+                            const SizedBox(height: 48),
+                            const AdBannerSection(
+                              placement: AdPlacementType.banner,
+                              limit: 2,
+                            ),
+                            const SizedBox(height: 100),
+                            _FadeInSection(
+                              child: _buildMissionSection(theme),
+                            ),
+                            const SizedBox(height: 80),
+                            _FadeInSection(
+                              child: _buildStatsSection(theme),
+                            ),
+                            const SizedBox(height: 80),
+                            _FadeInSection(
+                              child: _buildHowItWorksSection(theme),
+                            ),
 
                         const SizedBox(height: 100),
 
                         _FadeInSection(
                           child: _buildEducationalGuideSection(theme),
                         ),
-
-                        const SizedBox(height: 100),
-
-                        _FadeInSection(
-                          child: _buildFAQSection(theme),
+                            const SizedBox(height: 100),
+                            _FadeInSection(
+                              child: _buildFAQSection(theme),
+                            ),
+                            const SizedBox(height: 80),
+                            _FadeInSection(
+                              child: _buildTestimonialsSection(theme),
+                            ),
+                            const SizedBox(height: 100),
+                            _FadeInSection(
+                              child: _buildCTASection(context, theme),
+                            ),
+                            const SizedBox(height: 80),
+                            const _AppFooter(),
+                          ],
                         ),
-
-                        const SizedBox(height: 80),
-
-                        _FadeInSection(
-                          child: _buildTestimonialsSection(theme),
-                        ),
-
-                        const SizedBox(height: 100),
-
-                        _FadeInSection(
-                          child: _buildCTASection(context, theme),
-                        ),
-
-                        const SizedBox(height: 80),
-
-                        const _AppFooter(),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
                   );
                 },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          const AdPopupSection(),
+        ],
       ),
     );
   }
@@ -136,8 +135,8 @@ class LandingScreen extends ConsumerWidget {
       builder: (context, constraints) {
         final isMobile = constraints.maxWidth < 600;
         final heroHeight = isMobile
-            ? MediaQuery.of(context).size.height * 1.05
-            : MediaQuery.of(context).size.height * 0.92;
+            ? MediaQuery.of(context).size.height * 1.15
+            : MediaQuery.of(context).size.height * 1.05;
         
         return SizedBox(
           width: double.infinity,
@@ -247,8 +246,7 @@ class LandingScreen extends ConsumerWidget {
                         Text(
                           'Education starts\nfrom the right choice.',
                           textAlign: TextAlign.center,
-                          style:
-                              theme.textTheme.displayMedium?.copyWith(
+                          style: theme.textTheme.displayMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             height: 1.1,
@@ -262,8 +260,7 @@ class LandingScreen extends ConsumerWidget {
                         Text(
                           'ትምህርት በትክክለኛው ምርጫ ይጀምራል።',
                           textAlign: TextAlign.center,
-                          style:
-                              theme.textTheme.headlineSmall?.copyWith(
+                          style: theme.textTheme.headlineSmall?.copyWith(
                             color: Colors.white.withOpacity(0.92),
                             fontWeight: FontWeight.w500,
                             fontSize: isMobile ? 14 : null,
@@ -274,15 +271,12 @@ class LandingScreen extends ConsumerWidget {
 
                         // Description
                         ConstrainedBox(
-                          constraints:
-                              const BoxConstraints(maxWidth: 580),
+                          constraints: const BoxConstraints(maxWidth: 580),
                           child: Text(
                             "A modern platform helping Ethiopian families discover, compare, and choose schools that truly fit their child's needs, aspirations, and future.",
                             textAlign: TextAlign.center,
-                            style:
-                                theme.textTheme.bodyLarge?.copyWith(
-                              color:
-                                  Colors.white.withOpacity(0.85),
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: Colors.white.withOpacity(0.85),
                               height: 1.7,
                               fontSize: isMobile ? 13 : null,
                             ),
@@ -298,8 +292,7 @@ class LandingScreen extends ConsumerWidget {
                           runSpacing: 16,
                           children: [
                             FilledButton.icon(
-                              onPressed: () =>
-                                  context.go('/register'),
+                              onPressed: () => context.go('/register'),
                               style: FilledButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 foregroundColor: Colors.black,
@@ -319,23 +312,37 @@ class LandingScreen extends ConsumerWidget {
                                 size: isMobile ? 16 : 18,
                               ),
                             ),
-
                             OutlinedButton(
-                              onPressed: () =>
-                                  context.go('/login'),
+                              onPressed: () => context.go('/login'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.white,
                                 side: const BorderSide(
                                   color: Colors.white,
                                 ),
                                 padding:
-                                    EdgeInsets.symmetric(
-                                  horizontal: isMobile ? 20 : 30,
-                                  vertical: isMobile ? 14 : 20,
+                                    const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 20,
                                 ),
                                 shape: const StadiumBorder(),
                               ),
-                              child: Text('Sign In', style: TextStyle(fontSize: isMobile ? 13 : null)),
+                              child: const Text('Sign In'),
+                            ),
+                            OutlinedButton(
+                              onPressed: () => context.go('/advertise'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                side: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 20,
+                                ),
+                                shape: const StadiumBorder(),
+                              ),
+                              child: const Text('Advertise with us'),
                             ),
                           ],
                         ),
@@ -363,8 +370,7 @@ class LandingScreen extends ConsumerWidget {
       children: [
         Text(
           'OUR SERVICES',
-          style:
-              theme.textTheme.labelLarge?.copyWith(letterSpacing: 2),
+          style: theme.textTheme.labelLarge?.copyWith(letterSpacing: 2),
         ),
 
         SpacingHelper.lg,
@@ -375,9 +381,7 @@ class LandingScreen extends ConsumerWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-
         const SizedBox(height: 40),
-
         LayoutBuilder(
           builder: (context, constraints) {
             final isMobile = constraints.maxWidth < 600;
@@ -969,7 +973,7 @@ class LandingScreen extends ConsumerWidget {
           builder: (context, constraints) {
             final isMobile = constraints.maxWidth < 600;
             final crossAxisCount = isMobile ? 2 : 4;
-            
+
             return GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -1020,10 +1024,26 @@ class LandingScreen extends ConsumerWidget {
 
   Widget _buildHowItWorksSection(ThemeData theme) {
     final steps = [
-      {'icon': Icons.person_add, 'title': 'Create Account', 'description': 'Sign up in seconds with your email'},
-      {'icon': Icons.tune, 'title': 'Set Preferences', 'description': 'Tell us what matters to you'},
-      {'icon': Icons.school, 'title': 'Get Recommendations', 'description': 'Receive personalized school matches'},
-      {'icon': Icons.favorite, 'title': 'Compare & Choose', 'description': 'Find the perfect fit for your child'},
+      {
+        'icon': Icons.person_add,
+        'title': 'Create Account',
+        'description': 'Sign up in seconds with your email'
+      },
+      {
+        'icon': Icons.tune,
+        'title': 'Set Preferences',
+        'description': 'Tell us what matters to you'
+      },
+      {
+        'icon': Icons.school,
+        'title': 'Get Recommendations',
+        'description': 'Receive personalized school matches'
+      },
+      {
+        'icon': Icons.favorite,
+        'title': 'Compare & Choose',
+        'description': 'Find the perfect fit for your child'
+      },
     ];
 
     return Column(
@@ -1047,7 +1067,7 @@ class LandingScreen extends ConsumerWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             final isMobile = constraints.maxWidth < 800;
-            
+
             if (isMobile) {
               // Vertical layout for mobile
               return Column(
@@ -1161,8 +1181,7 @@ class LandingScreen extends ConsumerWidget {
       children: [
         Text(
           'COMMON QUESTIONS',
-          style:
-              theme.textTheme.labelLarge?.copyWith(letterSpacing: 2),
+          style: theme.textTheme.labelLarge?.copyWith(letterSpacing: 2),
         ),
 
         SpacingHelper.lg,
@@ -1181,19 +1200,16 @@ class LandingScreen extends ConsumerWidget {
           'Is the system free for parents?',
           'Yes. Parents can create accounts and explore schools for free.',
         ),
-
         _faqItem(
           theme,
           'Which cities are covered?',
           'We are currently focused on Addis Ababa and expanding gradually.',
         ),
-
         _faqItem(
           theme,
           'How are schools verified?',
           'Each school profile is reviewed before publication to ensure accuracy.',
         ),
-
         _faqItem(
           theme,
           'How do recommendations work?',
@@ -1222,19 +1238,22 @@ class LandingScreen extends ConsumerWidget {
   Widget _buildTestimonialsSection(ThemeData theme) {
     final testimonials = [
       {
-        'quote': 'This platform made finding the right school for my daughter so easy. The recommendations were spot-on!',
+        'quote':
+            'This platform made finding the right school for my daughter so easy. The recommendations were spot-on!',
         'name': 'Sarah T.',
         'role': 'Parent',
         'icon': Icons.person,
       },
       {
-        'quote': 'Finally, a platform that understands what Ethiopian families need. The school comparisons are incredibly helpful.',
+        'quote':
+            'Finally, a platform that understands what Ethiopian families need. The school comparisons are incredibly helpful.',
         'name': 'Dawit A.',
         'role': 'Parent',
         'icon': Icons.person,
       },
       {
-        'quote': 'As a school administrator, this platform has helped us reach more families and showcase our unique programs.',
+        'quote':
+            'As a school administrator, this platform has helped us reach more families and showcase our unique programs.',
         'name': 'Hanna M.',
         'role': 'School Administrator',
         'icon': Icons.school,
@@ -1262,7 +1281,7 @@ class LandingScreen extends ConsumerWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             final isMobile = constraints.maxWidth < 800;
-            
+
             if (isMobile) {
               return Column(
                 children: testimonials.map((testimonial) {
@@ -1370,7 +1389,7 @@ class LandingScreen extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           // Main content
           Padding(
             padding: EdgeInsets.symmetric(horizontal: isMobile ? 8 : 24),
@@ -1464,7 +1483,8 @@ class _FeatureCard extends StatefulWidget {
   State<_FeatureCard> createState() => _FeatureCardState();
 }
 
-class _FeatureCardState extends State<_FeatureCard> with SingleTickerProviderStateMixin {
+class _FeatureCardState extends State<_FeatureCard>
+    with SingleTickerProviderStateMixin {
   bool _isHovered = false;
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
@@ -1596,7 +1616,8 @@ class _StatCard extends StatefulWidget {
   State<_StatCard> createState() => _StatCardState();
 }
 
-class _StatCardState extends State<_StatCard> with SingleTickerProviderStateMixin {
+class _StatCardState extends State<_StatCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeInAnimation;
 
@@ -1712,7 +1733,8 @@ class _StepCard extends StatefulWidget {
   State<_StepCard> createState() => _StepCardState();
 }
 
-class _StepCardState extends State<_StepCard> with SingleTickerProviderStateMixin {
+class _StepCardState extends State<_StepCard>
+    with SingleTickerProviderStateMixin {
   bool _isHovered = false;
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
@@ -1766,7 +1788,8 @@ class _StepCardState extends State<_StepCard> with SingleTickerProviderStateMixi
             ),
             boxShadow: [
               BoxShadow(
-                color: widget.theme.colorScheme.shadow.withOpacity(_isHovered ? 0.1 : 0.05),
+                color: widget.theme.colorScheme.shadow
+                    .withOpacity(_isHovered ? 0.1 : 0.05),
                 blurRadius: _isHovered ? 15 : 8,
                 offset: const Offset(0, 4),
               ),
@@ -1799,7 +1822,8 @@ class _StepCardState extends State<_StepCard> with SingleTickerProviderStateMixi
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: widget.theme.colorScheme.primaryContainer.withOpacity(0.3),
+                      color: widget.theme.colorScheme.primaryContainer
+                          .withOpacity(0.3),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -1851,7 +1875,8 @@ class _FAQItem extends StatefulWidget {
   State<_FAQItem> createState() => _FAQItemState();
 }
 
-class _FAQItemState extends State<_FAQItem> with SingleTickerProviderStateMixin {
+class _FAQItemState extends State<_FAQItem>
+    with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
   bool _isHovered = false;
   late AnimationController _controller;
@@ -1913,11 +1938,13 @@ class _FAQItemState extends State<_FAQItem> with SingleTickerProviderStateMixin 
             ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: widget.theme.colorScheme.outlineVariant.withOpacity(_isHovered ? 0.8 : 0.5),
+              color: widget.theme.colorScheme.outlineVariant
+                  .withOpacity(_isHovered ? 0.8 : 0.5),
             ),
             boxShadow: [
               BoxShadow(
-                color: widget.theme.colorScheme.shadow.withOpacity(_isHovered ? 0.1 : 0.05),
+                color: widget.theme.colorScheme.shadow
+                    .withOpacity(_isHovered ? 0.1 : 0.05),
                 blurRadius: _isHovered ? 12 : 8,
                 offset: const Offset(0, 4),
               ),
@@ -1954,7 +1981,8 @@ class _FAQItemState extends State<_FAQItem> with SingleTickerProviderStateMixin 
                     widget.answer,
                     style: widget.theme.textTheme.bodyMedium?.copyWith(
                       height: 1.6,
-                      color: widget.theme.colorScheme.onSurface.withOpacity(0.8),
+                      color:
+                          widget.theme.colorScheme.onSurface.withOpacity(0.8),
                     ),
                   ),
                 ),
@@ -1990,7 +2018,8 @@ class _TestimonialCard extends StatefulWidget {
   State<_TestimonialCard> createState() => _TestimonialCardState();
 }
 
-class _TestimonialCardState extends State<_TestimonialCard> with SingleTickerProviderStateMixin {
+class _TestimonialCardState extends State<_TestimonialCard>
+    with SingleTickerProviderStateMixin {
   bool _isHovered = false;
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
@@ -2047,7 +2076,8 @@ class _TestimonialCardState extends State<_TestimonialCard> with SingleTickerPro
             ),
             boxShadow: [
               BoxShadow(
-                color: widget.theme.colorScheme.shadow.withOpacity(_isHovered ? 0.12 : 0.06),
+                color: widget.theme.colorScheme.shadow
+                    .withOpacity(_isHovered ? 0.12 : 0.06),
                 blurRadius: _isHovered ? 16 : 10,
                 offset: const Offset(0, 4),
               ),
@@ -2060,7 +2090,8 @@ class _TestimonialCardState extends State<_TestimonialCard> with SingleTickerPro
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: widget.theme.colorScheme.primaryContainer.withOpacity(0.3),
+                  color: widget.theme.colorScheme.primaryContainer
+                      .withOpacity(0.3),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -2106,7 +2137,8 @@ class _TestimonialCardState extends State<_TestimonialCard> with SingleTickerPro
                       Text(
                         widget.role,
                         style: widget.theme.textTheme.bodySmall?.copyWith(
-                          color: widget.theme.colorScheme.onSurface.withOpacity(0.6),
+                          color: widget.theme.colorScheme.onSurface
+                              .withOpacity(0.6),
                         ),
                       ),
                     ],
@@ -2136,7 +2168,8 @@ class _FadeInSection extends StatefulWidget {
   State<_FadeInSection> createState() => _FadeInSectionState();
 }
 
-class _FadeInSectionState extends State<_FadeInSection> with SingleTickerProviderStateMixin {
+class _FadeInSectionState extends State<_FadeInSection>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeInAnimation;
 
@@ -2244,6 +2277,11 @@ class _AppFooter extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () => context.go('/advertise'),
+                      child: const Text('Advertise with us'),
+                    ),
                   ],
                 );
               } else {
@@ -2282,6 +2320,11 @@ class _AppFooter extends StatelessWidget {
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurface.withOpacity(0.7),
                           ),
+                        ),
+                        const SizedBox(width: 24),
+                        TextButton(
+                          onPressed: () => context.go('/advertise'),
+                          child: const Text('Advertise with us'),
                         ),
                       ],
                     ),

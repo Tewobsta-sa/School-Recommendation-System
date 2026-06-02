@@ -167,7 +167,7 @@ export async function deleteMePermanently(userId, password) {
     await db.parent.delete({ where: { userId } });
   }
   if (user.moeOfficerProfile) {
-    await db.moeOfficer.delete({ where: { userId } });
+    await db.moEOfficer.delete({ where: { userId } });
   }
 
   // ── 14. Finally, delete the user row itself ───────────────────────────────

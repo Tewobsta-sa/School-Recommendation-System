@@ -43,7 +43,7 @@ export async function createReport(data, userId) {
       });  
   
       if (school && school.subCity) {  
-        const assignedOfficer = await db.moeOfficer.findFirst({  
+        const assignedOfficer = await db.moEOfficer.findFirst({  
           where: { subCity: school.subCity },  
           select: { userId: true },  
         });  

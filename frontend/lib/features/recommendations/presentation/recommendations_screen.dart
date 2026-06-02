@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../shared/widgets/responsive_shell.dart';
+import '../../ads/presentation/ad_banner_section.dart';
+import '../../ads/data/ad_dtos.dart';
 import '../../../shared/widgets/school_card.dart';
 import '../../../shared/widgets/custom_navigation.dart';
 import '../../auth/state/auth_controller.dart';
@@ -66,6 +68,11 @@ class RecommendationsScreen extends ConsumerWidget {
             currentPath: '/',
             suggestions: _getSuggestionsForParent(cart.length),
             onSuggestionTap: (path) => context.go(path),
+          ),
+          const SizedBox(height: 16),
+          const AdBannerSection(
+            placement: AdPlacementType.banner,
+            limit: 1,
           ),
           const SizedBox(height: 16),
           if (state.loading)

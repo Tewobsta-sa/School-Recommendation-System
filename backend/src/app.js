@@ -137,6 +137,7 @@ app.use(
   (await import("./routes/analytics.routes.js")).default,
 );
 app.use("/api/likes", (await import("./routes/like.routes.js")).default);
+app.use("/api/ads", (await import("./routes/ad.routes.js")).default);
 
 app.use("/api", (await import("./routes/achievement.routes.js")).default);
 app.use("/api", analyticsRoutes);

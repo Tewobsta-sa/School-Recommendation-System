@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/theme.dart';
 import '../../../shared/widgets/responsive_shell.dart';
+import '../../ads/presentation/ad_banner_section.dart';
+import '../../ads/data/ad_dtos.dart';
 import '../../../shared/widgets/school_card.dart';
 import '../../auth/data/auth_dtos.dart';
 import '../../auth/state/auth_controller.dart';
@@ -274,6 +276,11 @@ class _SchoolsListScreenState extends ConsumerState<SchoolsListScreen> {
             onApply: _applyFilters,
             onClear: _clearFilters,
             onShowFilterDialog: _showFilterDialog,
+          ),
+          const SizedBox(height: 16),
+          const AdBannerSection(
+            placement: AdPlacementType.banner,
+            limit: 1,
           ),
           const SizedBox(height: 16),
           if (isParent && cart.length == 1)

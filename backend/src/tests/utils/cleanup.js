@@ -2,6 +2,8 @@ import { db } from "../../config/db.js";
 
 export const cleanDatabase = async () => {
   // Order matters: delete dependent rows before their parents to respect FKs.
+  await db.advertisement.deleteMany();
+  await db.payment.deleteMany();
   await db.analytics.deleteMany();
   await db.notification.deleteMany();
   await db.moderatorAction.deleteMany();
@@ -10,6 +12,7 @@ export const cleanDatabase = async () => {
   await db.announcement.deleteMany();
   await db.favorite.deleteMany();
   await db.preference.deleteMany();
+  await db.recommendationPreferenceCriteria.deleteMany();
   await db.recommendedSchool.deleteMany();
   await db.recommendationHistory.deleteMany();
   // Phase 2: subscription + verification_request hold FKs to school + user.
@@ -23,8 +26,14 @@ export const cleanDatabase = async () => {
   await db.discussionForum.deleteMany({ where: { threadId: { not: null } } });
   await db.discussionForum.deleteMany();
   // Phase 11: facility images FK to School — wipe before schools.
+  await db.like.deleteMany();
   await db.facilityImage.deleteMany();
+  await db.schoolDemographics.deleteMany();
+  await db.staffBreakdown.deleteMany();
+  await db.achievement.deleteMany();
+  await db.schoolUpdate.deleteMany();
   await db.school.deleteMany();
   await db.parent.deleteMany();
+  await db.moEOfficer.deleteMany();
   await db.user.deleteMany();
 };
