@@ -10,8 +10,8 @@
     "postinstall": "prisma generate"
   },
   "prisma": {
-    "seed": "cross-env PRISMA_CLIENT_ENGINE_TYPE=library node ./prisma/seed.js"
-  },
+  "seed": "cross-env PRISMA_CLIENT_ENGINE_TYPE=library node ./prisma/seed.js && node ./prisma/seed-schools.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
