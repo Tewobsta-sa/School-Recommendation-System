@@ -15,7 +15,7 @@ Web and Mobile based platform that helps Ethiopian parents discover, compare and
 
 ### Core Functionality
 - **School Discovery**: Search, filter, and browse schools with detailed information
-- **Personalized Recommendations:** Simple weight-based scoring system matching school profiles with parent preferences *(Note: Dedicated ML service integration planned for future deployment)*
+- **Personalized Recommendations:** Simple weight-based scoring system matching school profiles with parent preferences
 - **School Comparison**: Side-by-side comparison of 2-5 schools with detailed metrics
 - **Reviews & Ratings**: Parent reviews with moderation and category-based tags
 - **Follow System**: Subscribe to schools for targeted announcements
@@ -23,6 +23,7 @@ Web and Mobile based platform that helps Ethiopian parents discover, compare and
 - **Forum**: Community Q&A for parent discussions
 - **School Verification**: Document submission and MoE approval workflow
 - **Analytics**: School and Ministry-level analytics dashboards
+- **Advertisements**: Platform level ads for companies and interested users
 
 ### User Roles
 - **Parents**: Browse schools, get recommendations, write reviews, participate in forum
