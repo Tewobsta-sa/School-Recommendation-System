@@ -6,20 +6,20 @@ import 'typography.dart';
 /// Custom color palette for Fidel Guide
 /// Designed to be distinctive, professional, and education-focused
 class AppColors {
-  // Primary brand colors - Rich navy blue for trust and professionalism
-  static const primary = Color(0xFF1E3A8A);
-  static const primaryLight = Color(0xFF3B82F6);
-  static const primaryDark = Color(0xFF1E40AF);
+  // Primary brand colors - Deep burgundy for elegance and professionalism
+  static const primary = Color(0xFF590016);
+  static const primaryLight = Color(0xFF8A1538);
+  static const primaryDark = Color(0xFF3D0010);
 
-  // Secondary colors - Warm amber for energy and highlights
-  static const secondary = Color(0xFFF59E0B);
-  static const secondaryLight = Color(0xFFFCD34D);
-  static const secondaryDark = Color(0xFFD97706);
+  // Secondary colors - Warm gold for premium academic feel
+  static const secondary = Color(0xFFD4A017);
+  static const secondaryLight = Color(0xFFF3D46B);
+  static const secondaryDark = Color(0xFFA97800);
 
-  // Accent colors - Royal blue for depth and professionalism
-  static const accent = Color(0xFF2563EB);
-  static const accentLight = Color(0xFF60A5FA);
-  static const accentDark = Color(0xFF1D4ED8);
+  // Accent colors - Muted rose for complementary depth
+  static const accent = Color(0xFFA64D79);
+  static const accentLight = Color(0xFFC779A0);
+  static const accentDark = Color(0xFF7A2E55);
 
   // Semantic colors
   static const success = Color(0xFF10B981);
@@ -31,37 +31,37 @@ class AppColors {
   static const info = Color(0xFF3B82F6);
   static const infoLight = Color(0xFFDBEAFE);
 
-  // Neutral colors - Soft cool gray palette
-  static const background = Color(0xFFF8FAFC);
+  // Neutral colors - Warm rose-gray palette
+  static const background = Color(0xFFFAF7F8);
   static const surface = Color(0xFFFFFFFF);
-  static const surfaceVariant = Color(0xFFF1F5F9);
-  static const surfaceHighlight = Color(0xFFE2E8F0);
+  static const surfaceVariant = Color(0xFFF5EEF1);
+  static const surfaceHighlight = Color(0xFFE8DCE1);
 
   // Text colors
-  static const textPrimary = Color(0xFF0F172A);
-  static const textSecondary = Color(0xFF475569);
-  static const textTertiary = Color(0xFF94A3B8);
+  static const textPrimary = Color(0xFF2B0D16);
+  static const textSecondary = Color(0xFF5C4450);
+  static const textTertiary = Color(0xFFA78A98);
   static const textInverse = Color(0xFFFFFFFF);
 
   // Border and outline colors
-  static const outline = Color(0xFFE2E8F0);
-  static const outlineVariant = Color(0xFFCBD5E1);
+  static const outline = Color(0xFFE8DCE1);
+  static const outlineVariant = Color(0xFFD5C5CC);
 
   // Gradient definitions
   static const primaryGradient = LinearGradient(
-    colors: [primaryLight, primary],
+    colors: [primaryLight, primary], // Rose burgundy → deep burgundy
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   static const secondaryGradient = LinearGradient(
-    colors: [secondaryLight, secondary],
+    colors: [secondaryLight, secondary], // Soft gold → warm gold
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   static const surfaceGradient = LinearGradient(
-    colors: [surface, surfaceVariant],
+    colors: [surface, surfaceVariant], // White → soft rose-gray
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );

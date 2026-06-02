@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../shared/widgets/responsive_shell.dart';
 import '../../auth/data/auth_repository.dart';
 import '../data/ad_dtos.dart';
 import '../data/ad_repository.dart';
@@ -107,7 +106,7 @@ class _AdRequestScreenState extends ConsumerState<AdRequestScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(ctx);
-                context.go('/landing');
+                context.go('/');
               },
               child: const Text('Done'),
             ),
@@ -126,136 +125,185 @@ class _AdRequestScreenState extends ConsumerState<AdRequestScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ResponsiveShell(
-      title: 'Request an advertisement',
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Submit your ad for review. No payment is required now — after a moderator '
-              'approves your content, you will receive an email with the amount due and a '
-              'link to pay. Your ad goes live once payment is completed.',
-              style: theme.textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 20),
-            if (_error != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Text(_error!, style: TextStyle(color: theme.colorScheme.error)),
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Card(
+              elevation: 8,
+              shadowColor: Colors.black26,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
-            TextFormField(
-              controller: _companyCtl,
-              decoration: const InputDecoration(labelText: 'Company / organization'),
-              validator: (v) =>
-                  (v == null || v.trim().length < 2) ? 'Required' : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _emailCtl,
-              decoration: const InputDecoration(
-                labelText: 'Contact email',
-                helperText: 'Payment instructions are sent here after approval',
-              ),
-              keyboardType: TextInputType.emailAddress,
-              validator: (v) {
-                if (v == null || v.trim().isEmpty) return 'Required';
-                if (!v.contains('@')) return 'Enter a valid email';
-                return null;
-              },
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _phoneCtl,
-              decoration: const InputDecoration(labelText: 'Contact phone'),
-              keyboardType: TextInputType.phone,
-              validator: (v) =>
-                  (v == null || v.trim().length < 9) ? 'Required' : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _titleCtl,
-              decoration: const InputDecoration(labelText: 'Advertisement title'),
-              validator: (v) =>
-                  (v == null || v.trim().length < 3) ? 'Required' : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _descCtl,
-              decoration: const InputDecoration(labelText: 'Description (optional)'),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _urlCtl,
-              decoration: const InputDecoration(labelText: 'Target website URL'),
-              validator: (v) {
-                if (v == null || v.trim().isEmpty) return 'Required';
-                final uri = Uri.tryParse(v.trim());
-                if (uri == null || !uri.hasScheme) return 'Enter a valid URL';
-                return null;
-              },
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<AdPlacementType>(
-              value: _placement,
-              decoration: const InputDecoration(labelText: 'Placement'),
-              items: AdPlacementType.values
-                  .map((p) => DropdownMenuItem(
-                        value: p,
-                        child: Text(p.label()),
-                      ))
-                  .toList(),
-              onChanged: (v) {
-                if (v != null) setState(() => _placement = v);
-              },
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _durationCtl,
-              decoration: const InputDecoration(
-                labelText: 'Duration (days)',
-                helperText: 'Estimated total shown below (billed after approval)',
-              ),
-              keyboardType: TextInputType.number,
-              validator: (v) {
-                final d = int.tryParse(v?.trim() ?? '');
-                if (d == null || d < 1 || d > 365) return 'Enter 1–365 days';
-                return null;
-              },
-              onChanged: (_) => setState(() {}),
-            ),
-            if (_pricing != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  'Estimated total after approval: ${_estimatedAmount.toStringAsFixed(0)} ETB',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: theme.colorScheme.primary,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text('Request an advertisement',
+                          style: theme.textTheme.headlineMedium,
+                          textAlign: TextAlign.center),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Submit your ad for review. No payment is required now — after a moderator '
+                        'approves your content, you will receive an email with the amount due and a '
+                        'link to pay. Your ad goes live once payment is completed.',
+                        style: theme.textTheme.bodySmall,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      if (_error != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text(_error!, style: TextStyle(color: theme.colorScheme.error)),
+                        ),
+                      TextFormField(
+                        controller: _companyCtl,
+                        decoration: const InputDecoration(
+                          labelText: 'Company / organization',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                        validator: (v) =>
+                            (v == null || v.trim().length < 2) ? 'Required' : null,
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _emailCtl,
+                        decoration: const InputDecoration(
+                          labelText: 'Contact email',
+                          helperText: 'Payment instructions are sent here after approval',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (v) {
+                          if (v == null || v.trim().isEmpty) return 'Required';
+                          if (!v.contains('@')) return 'Enter a valid email';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _phoneCtl,
+                        decoration: const InputDecoration(
+                          labelText: 'Contact phone',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: (v) =>
+                            (v == null || v.trim().length < 9) ? 'Required' : null,
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _titleCtl,
+                        decoration: const InputDecoration(
+                          labelText: 'Advertisement title',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                        validator: (v) =>
+                            (v == null || v.trim().length < 3) ? 'Required' : null,
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _descCtl,
+                        decoration: const InputDecoration(
+                          labelText: 'Description (optional)',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                        maxLines: 3,
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _urlCtl,
+                        decoration: const InputDecoration(
+                          labelText: 'Target website URL',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                        validator: (v) {
+                          if (v == null || v.trim().isEmpty) return 'Required';
+                          final uri = Uri.tryParse(v.trim());
+                          if (uri == null || !uri.hasScheme) return 'Enter a valid URL';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButtonFormField<AdPlacementType>(
+                        value: _placement,
+                        decoration: const InputDecoration(
+                          labelText: 'Placement',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                        items: AdPlacementType.values
+                            .map((p) => DropdownMenuItem(
+                                  value: p,
+                                  child: Text(p.label()),
+                                ))
+                            .toList(),
+                        onChanged: (v) {
+                          if (v != null) setState(() => _placement = v);
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _durationCtl,
+                        decoration: const InputDecoration(
+                          labelText: 'Duration (days)',
+                          helperText: 'Estimated total shown below (billed after approval)',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                        keyboardType: TextInputType.number,
+                        validator: (v) {
+                          final d = int.tryParse(v?.trim() ?? '');
+                          if (d == null || d < 1 || d > 365) return 'Enter 1–365 days';
+                          return null;
+                        },
+                        onChanged: (_) => setState(() {}),
+                      ),
+                      if (_pricing != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            'Estimated total after approval: ${_estimatedAmount.toStringAsFixed(0)} ETB',
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: theme.colorScheme.primary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      const SizedBox(height: 10),
+                      OutlinedButton.icon(
+                        onPressed: _pickImage,
+                        icon: const Icon(Icons.upload_file, size: 18),
+                        label: Text(_image == null
+                            ? 'Upload banner image (optional)'
+                            : _image!.name),
+                      ),
+                      const SizedBox(height: 16),
+                      FilledButton(
+                        onPressed: _loading ? null : _submitRequest,
+                        child: _loading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : const Text('Submit for review'),
+                      ),
+                      const SizedBox(height: 12),
+                      TextButton.icon(
+                        onPressed: () => context.go('/'),
+                        icon: const Icon(Icons.home_outlined, size: 16),
+                        label: const Text('Back to home'),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            const SizedBox(height: 12),
-            OutlinedButton.icon(
-              onPressed: _pickImage,
-              icon: const Icon(Icons.upload_file),
-              label: Text(_image == null
-                  ? 'Upload banner image (optional)'
-                  : _image!.name),
             ),
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: _loading ? null : _submitRequest,
-              child: _loading
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Text('Submit for review'),
-            ),
-          ],
+          ),
         ),
       ),
     );

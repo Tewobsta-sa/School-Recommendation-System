@@ -135,8 +135,8 @@ class LandingScreen extends ConsumerWidget {
       builder: (context, constraints) {
         final isMobile = constraints.maxWidth < 600;
         final heroHeight = isMobile
-            ? MediaQuery.of(context).size.height * 1.05
-            : MediaQuery.of(context).size.height * 0.92;
+            ? MediaQuery.of(context).size.height * 1.15
+            : MediaQuery.of(context).size.height * 1.05;
         
         return SizedBox(
           width: double.infinity,
@@ -327,6 +327,22 @@ class LandingScreen extends ConsumerWidget {
                                 shape: const StadiumBorder(),
                               ),
                               child: const Text('Sign In'),
+                            ),
+                            OutlinedButton(
+                              onPressed: () => context.go('/advertise'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                side: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 20,
+                                ),
+                                shape: const StadiumBorder(),
+                              ),
+                              child: const Text('Advertise with us'),
                             ),
                           ],
                         ),
@@ -2261,6 +2277,11 @@ class _AppFooter extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () => context.go('/advertise'),
+                      child: const Text('Advertise with us'),
+                    ),
                   ],
                 );
               } else {
@@ -2299,6 +2320,11 @@ class _AppFooter extends StatelessWidget {
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurface.withOpacity(0.7),
                           ),
+                        ),
+                        const SizedBox(width: 24),
+                        TextButton(
+                          onPressed: () => context.go('/advertise'),
+                          child: const Text('Advertise with us'),
                         ),
                       ],
                     ),
